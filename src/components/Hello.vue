@@ -58,7 +58,7 @@ export default {
         {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, // JavaScript
         {"label":"AMX $40", "value":1, "question":"Check you email to redeem an American Express credit card for $40!"}, // border
         {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, // CSS
-        {"label":"FRANK'S BEAN", "value":1, "question":"YOUR SIGNIFICANT OTHER IS THE REAL WINNER TONIGHT! CONGRATS!!"} //comma
+        {"label":"FRANK'S BEANS", "value":1, "question":"YOUR SIGNIFICANT OTHER IS THE REAL WINNER TONIGHT! CONGRATS!!"} //comma
     ];
     var svg = d3.select('#chart')
         .append("svg")
@@ -237,6 +237,11 @@ a {
   }
   #logo {
     right: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  #logo {
+    right: 30px;
   }
 }
 </style>
