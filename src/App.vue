@@ -26,6 +26,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
 }
 
 main {
@@ -39,6 +45,8 @@ header {
   padding: 0 16px 0 24px;
   background-color: #35495E;
   color: #ffffff;
+  position: fixed;
+  width: 100%;
 }
 
 header span {

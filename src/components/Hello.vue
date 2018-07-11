@@ -1,27 +1,46 @@
 <template>
   <div class="hello">
+    <!-- <div v-show="question.length !== 0"><h1 id="result">{{question}}</h1></div> -->
+    <div id="prize">
+      <h1 id="result"><span style="color:#b01538">{{prizeLabel}}</span><br>{{prizeDesc}}</h1>
+      <button class="spin button" id="button" @click="spinAgain">Spin Again</button>
+    </div>
+
     <div id="chart">
       <img id="logo" src="http://138.197.2.49/_nuxt/img/logo.f9d04ae.png">
     </div>
-    <div id="question"><h1></h1></div>
   </div>
 </template>
 
 <script>
 
+import anime from 'animejs'
+
 export default {
   name: 'hello',
   data () {
     return {
+      prizeDesc: '',
+      prizeLabel: '',
+      resultContainer: '',
+      chart: '',
+      button: '',
+      prize: ''
     }
   },
   mounted () {
 
+    this.resultContainer = document.getElementById('result');
+    this.prize = document.getElementById('prize');
+    this.button = document.getElementById('button');
+    this.chart = document.getElementById('chart');
+
     // This game is thanks to: https://code.sololearn.com/WD8GprR5hozY/#html
+    // And this for the svg wheel border: http://jsfiddle.net/odiseo/4xk58/4/
 
     var padding = {top:20, right:40, bottom:0, left:0},
-        w = 500 - padding.left - padding.right,
-        h = 520 - padding.top  - padding.bottom,
+        w = 540 - padding.left - padding.right,
+        h = 560 - padding.top  - padding.bottom,
         r = Math.min(w, h)/2,
         rotation = 0,
         oldrotation = 0,
@@ -29,35 +48,36 @@ export default {
         oldpick = [],
         color = d3.scale.category20c();//category20()
         //randomNumbers = getRandomNumbers();
-    //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
+        //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
+
     var data = [
-        {"label":"Try again",  "value":1,  "question":"Sorry, better luck next time!"}, // padding
+        {"label":"",  "value":1,  "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // padding
         {"label":"75% OFF", "value":1, "question":"You've won 75% off your next visit at Camp Bow Wow. See your inbox for details!"}, // <style>
-        {"label":"Try again",  "value":1,  "question":"Sorry, better luck next time!"}, //color
+        {"label":"",  "value":1,  "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, //color
         {"label":"FREE TRIM", "value":1, "question":"You've won a free haircut for your pet at Camp Bow Wow. See your inbox for details!"}, // <style>
-        {"label":"FREE CLIPPING", "value":1, "question":"You've won a free nail clipping for your pet at Camp Bow Wow. See your inbox for details!"}, // <style>
+        {"label":"",  "value":1,  "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // padding
         {"label":"FREE GROOM", "value":1, "question":"You've won a free grooming for your pet at Camp Bow Wow. See your inbox for details!"}, // <style>
         {"label":"25% OFF", "value":1, "question":"You've won 25% off your next visit at Camp Bow Wow. See your inbox for details!"}, // <style>
-        {"label":"50% OFF", "value":1, "question":"You've won 50% off your next visit at Camp Bow Wow. See your inbox for details!"}, // <style>
-        {"label":"Try again",  "value":1,  "question":"Sorry, better luck next time!"}, // padding
-        {"label":"50% OFF", "value":1, "question":"You've won 50% off your next visit at Camp Bow Wow. See your inbox for details!"}, // <style>
-        {"label":"$25 Home Depot Gift Card", "value":1, "question":"Check you email to redeem a Home Depot gift card for $25!"}, // HTML
+        {"label":"",  "value":1,  "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // padding
         {"label":"2 NIGHT STAY", "value":1, "question":"You've won a free nights stay at Camp Bow Wow ($200 value!). See your inbox for details!"}, // <style>
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, //< >
-        {"label":"CampBowWow HAT", "value":1, "question":"Thanks for playing. Here's a free hat!"}, //<p>
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, //< >
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, // { }
+        {"label":"50% OFF", "value":1, "question":"You've won 50% off your next visit at Camp Bow Wow. See your inbox for details!"}, // <style>
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // HTML
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // <style>
+        {"label":"FREE CLIPPING", "value":1, "question":"You've won a free nail clipping for your pet at Camp Bow Wow. See your inbox for details!"}, // <style>
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, //<p>
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, //< >
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // { }
         {"label":"CampBowWow T-SHIRT", "value":1, "question":"Thanks for playing. Here's a free T-shirt!"}, //<p>
         {"label":"CampBowWow LEASH", "value":1, "question":"Thanks for playing. Here's a leash!"}, //<p>
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, //<head>
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, // colon
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, //<head>
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // colon
         {"label":"1 NIGHT STAY", "value":1, "question":"You've won a free nights stay at Camp Bow Wow ($100 value!). See your inbox for details!"}, // <style>
         {"label":"FREE DOGGIE BATH", "value":1, "question":"Check you email for a free dog bath on your next visit!"}, // .html
-        {"label":"$25 Amazon Gift Card", "value":1, "question":"Check you email to redeem an Amazon gift card for $25!"}, // HTML
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, // CSS
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, // JavaScript
-        {"label":"AMX $40", "value":1, "question":"Check you email to redeem an American Express credit card for $40!"}, // border
-        {"label":"Try again", "value":1, "question":"Sorry, better luck next time!"}, // CSS
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // HTML
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // CSS
+        {"label":"50% OFF", "value":1, "question":"You've won 50% off your next visit at Camp Bow Wow. See your inbox for details!"}, // <style>
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // border
+        {"label":"", "value":1, "question":"Sorry, you did not win, but check your email for other cool opportunities!"}, // CSS
         {"label":"FRANK'S BEANS", "value":1, "question":"YOUR SIGNIFICANT OTHER IS THE REAL WINNER TONIGHT! CONGRATS!!"} //comma
     ];
     var svg = d3.select('#chart')
@@ -81,9 +101,52 @@ export default {
         .append("g")
         .attr("class", "slice");
 
+    var center = 200;
+    var outerRadius = 265;
+    var innerRadius = 100;
+
+    var arcOutter = d3.svg.arc()
+        .innerRadius(outerRadius - 15)
+        .outerRadius(outerRadius);
+
+    // var arcPhantom = d3.svg.arc()
+    //     .innerRadius(0)
+    //     .outerRadius(outerRadius + 20);
+
+    //Set up outter arc groups
+    var outterArcs = svg.selectAll("g.outter-arc")
+        .data(pie(data))
+        .enter()
+        .append("g")
+        .attr("class", "outter-arc")
+        .attr("transform", "translate(" + (w/2 + padding.left) + "," + (h/2 + padding.top) + ")");
+
+    //Set up phantom arc groups
+    // var phantomArcs = svg.selectAll("g.phantom-arc")
+    //     .data(pie(data))
+    //     .enter()
+    //     .append("g")
+    //     .attr("class", "phantom-arc")
+    //     .attr("transform", "translate(" + (w/2 + padding.left) + "," + (h/2 + padding.top) + ")");
+
+    //Draw outter arc paths
+    outterArcs.append("path")
+        .attr("fill", '#ddd')
+        .attr("d", arcOutter).style('stroke', '#ddd')
+        .style('stroke-width', 0);
+
+    //Draw phantom arc paths
+    // phantomArcs.append("path")
+    //     .attr("fill", 'white')
+    //     .attr("fill-opacity", 0.1)
+    //     .attr("d", arcPhantom).style('stroke', 'white')
+    //     .style('stroke-width', 1);
+
     arcs.append("path")
         .attr("fill", function(d, i){ return color(i); })
         .attr("d", function (d) { return arc(d); });
+
+        let component = this;
     // add the text
     arcs.append("text").attr("transform", function(d){
             d.innerRadius = 0;
@@ -92,6 +155,7 @@ export default {
             return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius -10) +")";
         })
         .attr("text-anchor", "end")
+        .attr("y", "4") // vertically sets the text w/in slice
         .text( function(d, i) {
             return data[i].label;
         });
@@ -133,12 +197,16 @@ export default {
             .duration(4000)
             .attrTween("transform", rotTween)
             .each("end", function(){
+
+                component.showResultDetail(data[picked]);
                 //mark question as seen
                 // d3.select(".slice:nth-child(" + (picked + 1) + ") path")
                 //     .attr("fill", "#111");
                 //populate question
-                d3.select("#question h1")
-                    .text(data[picked].question);
+
+                // d3.select("#question h1")
+                //     .text(data[picked].question);
+
                 oldrotation = rotation;
 
                 container.on("click", spin);
@@ -187,6 +255,83 @@ export default {
         }
         return array;
     }
+  },
+  methods: {
+    showResultDetail: function (result) {
+
+      this.prizeLabel = result.label;
+      this.prizeDesc = result.question;
+
+      this.resultContainer.style.backgroundColor = '#fff';
+      this.prize.style.zIndex = 1;
+      this.chart.style.backgroundColor = '#fff';
+      this.resultContainer.style.transform = 'translateX(1000px)';
+
+      anime({
+        targets: this.chart,
+        translateY: [
+          { value: 1000, duration: 1000 }
+        ],
+        easing: [.91,-0.54,.29,1.56],
+        backgroundColor: '#FFF',
+        duration: 1000,
+        loop: false
+      });
+
+      anime({
+        targets: this.button,
+        opacity: 1,
+        easing: 'linear',
+        duration: 500
+      });
+
+      anime({
+        targets: this.resultContainer,
+        translateX: [
+          { value: 1000, duration: 500 },
+          { value: 0, duration: 500 }
+        ],
+        easing: [.91,-0.54,.29,1.56],
+        backgroundColor: '#FFF',
+        duration: 1000,
+        loop: false
+      });
+
+    },
+    spinAgain: function ()  {
+
+      this.prize.style.zIndex = 0;
+
+      anime({
+        targets: this.chart,
+        translateY: [
+          { value: 0, duration: 1000 }
+        ],
+        easing: [.91,-0.54,.29,1.56],
+        backgroundColor: '#FFF',
+        duration: 1000,
+        loop: false
+      });
+
+      anime({
+        targets: this.button,
+        opacity: 0,
+        easing: 'linear',
+        duration: 100
+      });
+
+      anime({
+        targets: this.resultContainer,
+        translateX: [
+          { value: 0, duration: 250 },
+          { value: 1000, duration: 250 }
+        ],
+        easing: [.91,-0.54,.29,1.56],
+        backgroundColor: '#FFF',
+        duration: 500,
+        loop: false
+      });
+    },
   }
 }
 </script>
@@ -212,23 +357,58 @@ a {
   color: #35495E;
 }
 
+svg {
+  padding: 50px;
+  margin-left: 35px;
+}
+
 #chart {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  padding-top: 40px;
 }
 #logo {
   position: absolute;
   width: 130px;
   padding-top: 40px;
-  margin-left: -19px;
 }
 #logo:hover {
   cursor: pointer;
 }
-#question {
+#prize {
   padding: 0 50px;
+  position: absolute;
+  margin: 0 auto;
+  width: 90%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
+.button {
+  background-color: #b01538;
+  color: white;
+  border: none;
+  border-radius: 2px;
+  margin-top: 20px;
+  width: 200px;
+  height: 70px;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  transition: 1s;
+}
+#button {
+  opacity: 0;
+}
+.button:hover {
+  background-color: #35495E;
+  cursor: pointer;
+  opacity: 0;
+}
+
 
 /*MEDIA QUERIES*/
 @media screen and (max-width: 500px) {
@@ -236,12 +416,13 @@ a {
     margin-left: -500px;
   }
   #logo {
-    right: 50px;
+    right: 30px;
   }
 }
 @media screen and (max-width: 360px) {
   #logo {
     right: 30px;
+    top: 50px;
   }
 }
 </style>
