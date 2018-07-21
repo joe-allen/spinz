@@ -42,7 +42,7 @@ main {
 header {
   margin: 0;
   height: 56px;
-  padding: 0 16px 0 24px;
+  z-index: 1;
   background-color: #35495E;
   color: #ffffff;
   position: fixed;

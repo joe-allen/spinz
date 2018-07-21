@@ -131,8 +131,8 @@ export default {
 
     //Draw outter arc paths
     outterArcs.append("path")
-        .attr("fill", '#ddd')
-        .attr("d", arcOutter).style('stroke', '#ddd')
+        .attr("fill", '#b01538')
+        .attr("d", arcOutter).style('stroke', '#b01538')
         .style('stroke-width', 0);
 
     //Draw phantom arc paths
@@ -265,7 +265,7 @@ export default {
       this.resultContainer.style.backgroundColor = '#fff';
       this.prize.style.zIndex = 1;
       this.chart.style.backgroundColor = '#fff';
-      this.resultContainer.style.transform = 'translateX(1000px)';
+      this.resultContainer.style.transform = 'translateX(2000px)';
 
       anime({
         targets: this.chart,
@@ -288,7 +288,7 @@ export default {
       anime({
         targets: this.resultContainer,
         translateX: [
-          { value: 1000, duration: 500 },
+          { value: 2000, duration: 500 },
           { value: 0, duration: 500 }
         ],
         easing: [.91,-0.54,.29,1.56],
@@ -389,8 +389,8 @@ svg {
   flex-direction: column;
 }
 .button {
-  background-color: #b01538;
-  color: white;
+  background-color: #35495E;
+  color: #fff;
   border: none;
   border-radius: 2px;
   margin-top: 20px;
@@ -404,7 +404,7 @@ svg {
   opacity: 0;
 }
 .button:hover {
-  background-color: #35495E;
+  background-color: #b01538;
   cursor: pointer;
   opacity: 0;
 }
