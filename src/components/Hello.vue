@@ -7,7 +7,7 @@
     </div>
 
     <div id="chart">
-      <img id="logo" src="http://138.197.2.49/_nuxt/img/logo.f9d04ae.png">
+      <img id="logo" src="https://1p4xnw9vz583g92k7249hwjj-wpengine.netdna-ssl.com/wp-content/uploads/2016/11/CBW-logo2-300dpi-cymk.jpg">
     </div>
   </div>
 </template>
@@ -372,7 +372,8 @@ svg {
 #logo {
   position: absolute;
   width: 130px;
-  padding-top: 40px;
+  padding-top: 10px;
+  border-radius: 50%;
 }
 #logo:hover {
   cursor: pointer;
